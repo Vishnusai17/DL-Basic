@@ -111,7 +111,51 @@ predictions = model.predict(X_test)
 
 ---
 
-### 2. CNN (Coming Soon)
+### 2. CNN (`cnn/`)
+
+**Components**:
+- `Conv2D`: 2D convolution with im2col optimization
+- `MaxPool2D`: Max pooling for downsampling  
+- `Flatten`: Reshape 4D to 2D for dense layers
+- `SimpleCNN`: Full architecture (Conv→ReLU→Pool→Conv→ReLU→Pool→FC)
+
+**im2col Optimization**:
+
+Instead of nested loops, transform image into columns for efficient matrix multiplication:
+
+```python
+# Traditional convolution: O(n^6) nested loops
+# im2col: O(n^4) + fast matrix mult
+
+col = im2col(X, kernel_size, stride, padding)  # Image → columns
+out = W @ col.T  # Fast matrix multiplication
+```
+
+**Usage Example**:
+```python
+from cnn.cnn_from_scratch import SimpleCNN
+
+# Build CNN
+model = SimpleCNN(input_shape=(3, 32, 32), num_classes=10)
+
+# Train
+history = model.train(X_train, y_train, epochs=20, learning_rate=0.001)
+
+# Predict
+predictions = model.predict(X_test)
+```
+
+**Demo**:
+```bash
+cd cnn
+python demo_cifar10.py
+```
+
+Trains on digit classification (resized to 32x32x3), visualizes learned filters.
+
+---
+
+### 3. RNN/LSTM (Coming Soon)
 
 Will include:
 - Conv2D layer with im2col optimization
